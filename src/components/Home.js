@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import {
   POPULAR_BASE_URL,
   SEARCH_BASE_URL,
-  API_URL,
-  API_KEY,
   POSTER_SIZE,
   BACKDROP_SIZE,
   IMAGE_BASE_URL
@@ -22,6 +20,9 @@ import { useHomeFetch } from "./hooks/useHomeFetch";
 import NoImage from "./images/no_image.jpg";
 
 const Home = () => {
+  
+  const [searchTerm, setSearchTerm] = useState("");
+
   const [
     {
       state: { movies, currentPage, totalPages, heroImage },
@@ -29,8 +30,7 @@ const Home = () => {
       error
     },
     fetchMovies
-  ] = useHomeFetch();
-  const [searchTerm, setSearchTerm] = useState("");
+  ] = useHomeFetch(searchTerm);
 
   const searchMovies = search => {
     const endpoint = search ? SEARCH_BASE_URL + search : POPULAR_BASE_URL;
@@ -50,6 +50,7 @@ const Home = () => {
 
   if (error) return <div>Somthing went wrong...</div>;
   if (!movies[0]) return <Spinner />;
+
   return (
     <>
       {!searchTerm && (
